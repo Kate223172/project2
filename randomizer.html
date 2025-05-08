@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рандомайзер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        input, button, textarea {
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            font-size: 18px;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+<h1>Универсальный рандомайзер</h1>
+
+<!-- Генерация чисел -->
+<div class="section">
+    <h2>Случайное число</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="number">
+        <label>От: <input type="number" name="min" value="{{ min_val }}" step="any" required></label>
+        <label>До: <input type="number" name="max" value="{{ max_val }}" step="any" required></label><br>
+        <label><input type="checkbox" name="float"> Дробное число</label><br>
+        <button type="submit">Сгенерировать</button>
+    </form>
+    {% if result is not none and request.form.get("action") == "number" %}
+    <div class="result">Результат: <strong>{{ result }}</strong></div>
+    {% endif %}
+</div>
+
+<!-- Генерация пароля -->
+<div class="section">
+    <h2>Генератор паролей</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="password">
+        <label>Длина пароля: <input type="number" name="length" value="{{ password_length }}" min="4" max="120" required></label><br>
+        <button type="submit">Сгенерировать</button>
+    </form>
+    {% if result is not none and request.form.get("action") == "password" %}
+    <div class="result">Ваш пароль: <strong>{{ result }}</strong></div>
+    {% endif %}
+</div>
+
+<!-- Выбор случайного элемента -->
+<div class="section">
+    <h2>Выбор случайного элемента</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="item">
+        <label>Введите элементы через запятую:</label><br>
+        <textarea name="items" rows="4" style="width: 100%;">{{ items_text }}</textarea><br>
+        <button type="submit">Выбрать случайный</button>
+    </form>
+    {% if selected_item is not none %}
+    <div class="result">Выбран: <strong>{{ selected_item }}</strong></div>
+    {% endif %}
+</div>
+
+<!-- Генерация даты -->
+<div class="section">
+    <h2>Генератор дат</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="date">
+        <label>От: <input type="date" name="start_date" value="{{ start_date }}" required></label>
+        <label>До: <input type="date" name="end_date" value="{{ end_date }}" required></label><br>
+        <button type="submit">Сгенерировать дату</button>
+    </form>
+    {% if random_date is not none %}
+    <div class="result">Случайная дата: <strong>{{ random_date }}</strong></div>
+    {% endif %}
+</div>
+</body>
+</html>
